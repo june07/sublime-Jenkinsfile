@@ -33,6 +33,9 @@ With Package Control:
     note: You must clone or download into a directory named "Jenkinsfile" and not sublime-Jenkinsfile.
 2.  Restart Sublime Text (if required)
 
+### Setup
+Currently you must use Pageant (Windows) to create a session that can authenticate via ssh to your Jenkins host.  The name of the session must match the configured value of `pageant_session` (default is "jenkins") as shown:
+![](http://june07.github.io/image/JenkinsfilePageantConfig500.jpg)
 ### Usage
 Now whenever you have are editing a Jenkinsfile (must be named as such) and save the file, the plugin will invoke the remote instance of the Jenkins declarative-linter.
 The file can also be linted without saving by using the keyboard shortcut (cntl-alt-j by default)
