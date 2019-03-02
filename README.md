@@ -34,7 +34,11 @@ With Package Control:
 2.  Restart Sublime Text (if required)
 
 ### Usage
-Now whenever you have are editing a Jenkinsfile (must be named as such) and save the file, the plugin will invoke the remote instance of the Jenkins declarative-linter.  The file can also be linted without saving by using the keyboard shortcuts.
+Now whenever you have are editing a Jenkinsfile (must be named as such) and save the file, the plugin will invoke the remote instance of the Jenkins declarative-linter.
+The file can also be linted without saving by using the keyboard shortcut (cntl-alt-j by default)
+
+![](http://june07.github.io/image/JenkinsfileScreenshot1.jpg)
+![](http://june07.github.io/image/JenkinsfileScreenshot2.jpg)
 
 ### Todos
 
