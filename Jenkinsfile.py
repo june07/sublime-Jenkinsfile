@@ -54,7 +54,7 @@ class JenkinsfileCommand(sublime_plugin.TextCommand):
       jenkinsfileRegion = sublime.Region(0, view.size())
       jenkinsfileString = view.substr(jenkinsfileRegion)
       logger.debug(jenkinsfileString)
-      process = Popen(['plink', '-v', '-load', 'jenkins', 'declarative-linter'], stdout=PIPE, stdin=PIPE, stderr=PIPE, startupinfo=startupinfo)
+      process = Popen(['plink', '-v', '-load', settings.get('pageant_session'), 'declarative-linter'], stdout=PIPE, stdin=PIPE, stderr=PIPE, startupinfo=startupinfo)
       process_output = process.communicate(input=bytes(jenkinsfileString, 'UTF-8'))
       stdout_data = (process_output[0]).decode('UTF-8')
       stderr_data = (process_output[1]).decode('UTF-8')
