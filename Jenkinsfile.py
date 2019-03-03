@@ -103,4 +103,3 @@ class JenkinsfileCommand(sublime_plugin.TextCommand):
 class EventListener(sublime_plugin.EventListener):
   def on_post_save(self, view):
     view.run_command('jenkinsfile')
-
