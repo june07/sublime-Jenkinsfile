@@ -38,7 +38,7 @@ def setup_logging():
 def status_message(message):
   sublime.active_window().status_message(message)
 
-if 'win32' in str(sys.platform).lower():
+if sublime.platform() == 'windows':
   startupinfo = subprocess.STARTUPINFO()
   startupinfo.dwFlags = subprocess.CREATE_NEW_CONSOLE | subprocess.STARTF_USESHOWWINDOW
   startupinfo.wShowWindow = subprocess.SW_HIDE  
@@ -47,9 +47,9 @@ class JenkinsfileCommand(sublime_plugin.TextCommand):
   global logger
 
   def run(self, edit):
-    view = sublime.Window.active_view(sublime.active_window())
+    view = self.view
     if os.path.basename(view.file_name()) == 'Jenkinsfile':      
-      view = sublime.Window.active_view(sublime.active_window())
+      view = self.view
       view.erase_phantoms('alerts')
       jenkinsfileRegion = sublime.Region(0, view.size())
       jenkinsfileString = view.substr(jenkinsfileRegion)
