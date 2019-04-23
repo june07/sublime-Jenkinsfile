@@ -45,7 +45,7 @@ The file can also be linted without saving by using the keyboard shortcut (cntl-
 
 ### Todos
 
- - Pipeline the whole enchelada (CT/CI/CD)
+ - Pipeline the whole enchilada (CT/CI/CD)
     - JENKINS!
     - Docker
  - Add support for Linux, OSX
