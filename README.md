@@ -2,6 +2,8 @@
 
 Jenkinsfile is a plugin for Sublime Text.
 
+[https://packagecontrol.io/packages/Jenkinsfile](https://packagecontrol.io/packages/Jenkinsfile)
+
   - Securely (ssh) lint your Jenkinsfile ([What is a Jenkinsfile?](https://jenkins.io/doc/book/pipeline/jenkinsfile/)) inside of Sublime Text
   - Lint against Jenkins cloud instance if ssh access is unavailble on your primary environment
   - Magic
