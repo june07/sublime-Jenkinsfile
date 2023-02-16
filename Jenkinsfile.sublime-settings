@@ -1,4 +1,6 @@
 {
   "logfile": "jenkinsfile.log",
-  "pageant_session": "jenkins"
+  "pageant_session": "jenkins",
+  "jenkins_host": "10.10.0.77",
+  "jenkins_port": "22123"
 }
