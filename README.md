@@ -15,7 +15,8 @@ Jenkins includes Pipeline Development Tools as shown on [Jenkins.io][jenkins.io 
 > See the Jenkins CLI documentation for details on how to properly configure Jenkins for secure command-line access.
 
 
-### Technology
+## Technology
+
 * [Sublime Text] - obviously
 
 Jenkinsfile uses a number of open source projects to work properly:
@@ -24,13 +25,14 @@ Jenkinsfile uses a number of open source projects to work properly:
 
 And of course Jenkinsfile itself is open source with a [public Git repository][jenkinsfilegh] on GitHub.
 
-### How to install
+## How to install
+
 With Package Control:
 1. First step is done with Package Control or manually
-    - ***With Package Control***
+    - **With Package Control**
     Run “Package Control: Install Package” command, find and install Jenkinsfile plugin.
 
-    - ***Manually*** *(without Package Control)*:
+    - **Manually** *(without Package Control)*:
     Clone or download from [git][jenkinsfilegh] into your packages folder (in ST, find Browse Packages (in ST4 it's under Preferences)… menu item to open this folder).
     note: You must clone or download into a directory named "Jenkinsfile" and not sublime-Jenkinsfile.
     
@@ -38,22 +40,29 @@ With Package Control:
 
 2.  Restart Sublime Text (if required)
 
-### Setup
-Currently you must use Pageant (Windows) to create a session that can authenticate via ssh to your Jenkins host.  The name of the session must match the configured value of `pageant_session` (default is "jenkins") as shown:
-![](http://june07.github.io/image/JenkinsfilePageantConfig500.jpg)
-### Usage
+## Setup
+
+~~Currently you must use Pageant (Windows) to create a session that can authenticate via ssh to your Jenkins host.~~<br>
+You can now use this plugin via two methods either via Pageant on Windows or via plain SSH.
+
+1. Using via SSH (Linux, OSX, or Windows):
+   * Set the `jenkins_ssh_user` (default admin), `jenkins_ssh_host` (default localhost), and `jenkins_ssh_port` (default 22) configuration values to match that of your Jenkins server.<br><br>
+
+2. Or for a Pageant setup on Windows:
+   * The name of the session must match the configured value of `pageant_session` (default is "jenkins") as shown:
+      ![](http://june07.github.io/image/JenkinsfilePageantConfig500.jpg)
+
+## Usage
+
 Now whenever you have are editing a Jenkinsfile (must be named as such) and save the file, the plugin will invoke the remote instance of the Jenkins declarative-linter.
 The file can also be linted without saving by using the keyboard shortcut (cntl-alt-j by default)
 
 ![](http://june07.github.io/image/JenkinsfileScreenshot1.jpg)
 ![](http://june07.github.io/image/JenkinsfileScreenshot2.jpg)
 
-### Todos
+## Todos
 
- - Pipeline the whole enchilada (CT/CI/CD)
-    - JENKINS!
-    - Docker
- - Add support for ~~Linux~~(done 2/16/23!), OSX
+ - Add support for ~~Linux~~(done 2/16/23!), OSX (should work here as well now but I haven't tested...)
  - Add hosted Jenkins validation
 
 License
