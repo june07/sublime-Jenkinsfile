@@ -53,7 +53,7 @@ The file can also be linted without saving by using the keyboard shortcut (cntl-
  - Pipeline the whole enchilada (CT/CI/CD)
     - JENKINS!
     - Docker
- - Add support for Linux, OSX
+ - Add support for ~~Linux~~(done 2/16/23!), OSX
  - Add hosted Jenkins validation
 
 License
