@@ -22,9 +22,9 @@ def setup_logging():
   global logger
 
   logdir = os.path.join(os.path.expanduser('~'), '.jenkinsfile')
-  logfile = os.path.join(logdir, settings.get('logfile'))
   if not os.path.isdir(logdir):
     os.mkdir(logdir)
+  logfile = os.path.join(logdir, settings.get('logfile'))
 
   logging.basicConfig(level=logging.DEBUG,
     format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
@@ -44,8 +44,6 @@ if sublime.platform() == 'windows':
   startupinfo.wShowWindow = subprocess.SW_HIDE  
 
 class JenkinsfileCommand(sublime_plugin.TextCommand):
-  global logger
-
   def run(self, edit):
     view = self.view
     if os.path.basename(view.file_name()) == 'Jenkinsfile':      
@@ -54,7 +52,11 @@ class JenkinsfileCommand(sublime_plugin.TextCommand):
       jenkinsfileRegion = sublime.Region(0, view.size())
       jenkinsfileString = view.substr(jenkinsfileRegion)
       logger.debug(jenkinsfileString)
-      process = Popen(['plink', '-v', '-load', settings.get('pageant_session'), 'declarative-linter'], stdout=PIPE, stdin=PIPE, stderr=PIPE, startupinfo=startupinfo)
+      if sublime.platform() == 'windows': 
+        process = Popen(['plink', '-v', '-load', settings.get('pageant_session'), 'declarative-linter'], stdout=PIPE, stdin=PIPE, stderr=PIPE, startupinfo=startupinfo)
+      elif sublime.platform() == 'linux':
+        process = Popen(['ssh', '-v', settings.get('jenkins_ssh_host'), '-p', settings.get('jenkins_ssh_port'), '-l', settings.get('jenkins_ssh_user'), 'declarative-linter'], stdout=PIPE, stdin=PIPE, stderr=PIPE)
+        
       process_output = process.communicate(input=bytes(jenkinsfileString, 'UTF-8'))
       stdout_data = (process_output[0]).decode('UTF-8')
       stderr_data = (process_output[1]).decode('UTF-8')
