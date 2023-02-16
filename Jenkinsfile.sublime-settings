@@ -1,6 +1,7 @@
 {
   "logfile": "jenkinsfile.log",
   "pageant_session": "jenkins",
-  "jenkins_host": "10.10.0.77",
-  "jenkins_port": "22123"
+  "jenkins_ssh_user": "admin",
+  "jenkins_ssh_host": "localhost",
+  "jenkins_ssh_port": "22"
 }
