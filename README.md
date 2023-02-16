@@ -31,8 +31,11 @@ With Package Control:
     Run “Package Control: Install Package” command, find and install Jenkinsfile plugin.
 
     - ***Manually*** *(without Package Control)*:
-    Clone or download from [git][jenkinsfilegh] into your packages folder (in ST, find Browse Packages… menu item to open this folder).
+    Clone or download from [git][jenkinsfilegh] into your packages folder (in ST, find Browse Packages (in ST4 it's under Preferences)… menu item to open this folder).
     note: You must clone or download into a directory named "Jenkinsfile" and not sublime-Jenkinsfile.
+    
+    ![image](https://user-images.githubusercontent.com/11353590/219444106-d6207f7e-e872-48d2-80b0-b715c65acd25.png)
+
 2.  Restart Sublime Text (if required)
 
 ### Setup
