@@ -62,7 +62,7 @@ The file can also be linted without saving by using the keyboard shortcut (cntl-
 
 ## Todos
 
- - Add support for ~~Linux~~(done 2/16/23!), OSX (should work here as well now but I haven't tested...)
+ - Add support for ~~Linux~~(done 2/16/23!), All OSs are not supported via SSH.
  - Add hosted Jenkins validation
 
 License
