@@ -52,9 +52,9 @@ class JenkinsfileCommand(sublime_plugin.TextCommand):
       jenkinsfileRegion = sublime.Region(0, view.size())
       jenkinsfileString = view.substr(jenkinsfileRegion)
       logger.debug(jenkinsfileString)
-      if sublime.platform() == 'windows': 
+      if sublime.platform() == 'windows' and settings.get('pageant_session'): 
         process = Popen(['plink', '-v', '-load', settings.get('pageant_session'), 'declarative-linter'], stdout=PIPE, stdin=PIPE, stderr=PIPE, startupinfo=startupinfo)
-      elif sublime.platform() == 'linux':
+      else:
         process = Popen(['ssh', '-v', settings.get('jenkins_ssh_host'), '-p', settings.get('jenkins_ssh_port'), '-l', settings.get('jenkins_ssh_user'), 'declarative-linter'], stdout=PIPE, stdin=PIPE, stderr=PIPE)
         
       process_output = process.communicate(input=bytes(jenkinsfileString, 'UTF-8'))
