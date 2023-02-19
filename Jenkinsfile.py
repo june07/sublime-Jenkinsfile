@@ -63,9 +63,13 @@ class JenkinsfileCommand(sublime_plugin.TextCommand):
       
       if stderr_data:
         logger.debug('ERROR ' + stderr_data)
+        error = re.search(r'.*Permission denied.*', stderr_data)
+        if error:
+          sublime.set_timeout_async(lambda: status_message('ssh error: ' + error.group(0)), 1000)
+          return
+
       logger.debug(stdout_data)
 
-      errors = None
       output = stdout_data.splitlines()
       if output[0].lower().find('jenkinsfile successfully validated') != -1:
         sublime.set_timeout_async(lambda: status_message(output[0]), 1000)
@@ -73,34 +77,35 @@ class JenkinsfileCommand(sublime_plugin.TextCommand):
         return
       else:
         errors = output
+        phantom = None
+      
+        for e in errors:
+          matches = re.finditer('line (([0-9]{1,}),)', e)
+          for matchNum, match in enumerate(matches, start=1):
+            #print('MATCH FOUND ' + match.group(2))
+            region = view.line(view.text_point(int(match.group(2))-1, 0))
+            view.add_phantom(region=region, content='''
+              <html>
+                <body id="jenkinsfile">
+                    <style>
+                      .dot {
+                        height: 8px;
+                        width: 8px;
+                        background-color: red;
+                        border-radius: 50%;
+                        display: block;
+                      }
+                    </style>
+                    <div class="error">
+                      <code>''' +
+                      stdout_data + '''</code>
+                    </div>
+                </body>
+              </html>''',
+            layout=sublime.LAYOUT_BELOW,
+            key='alerts')
 
-      phantom = None
-      for e in errors:
-        matches = re.finditer('line (([0-9]{1,}),)', e)
-        for matchNum, match in enumerate(matches, start=1):
-          #print('MATCH FOUND ' + match.group(2))
-          region = view.line(view.text_point(int(match.group(2))-1, 0))
-          view.add_phantom(region=region, content='''
-            <html>
-              <body id="jenkinsfile">
-                  <style>
-                    .dot {
-                      height: 8px;
-                      width: 8px;
-                      background-color: red;
-                      border-radius: 50%;
-                      display: block;
-                    }
-                  </style>
-                  <div class="error">
-                    <code>''' +
-                    stdout_data + '''</code>
-                  </div>
-              </body>
-            </html>''',
-          layout=sublime.LAYOUT_BELOW,
-          key='alerts')
-          sublime_plugin.on_hover(view.id(), 0, sublime.HOVER_GUTTER)
+    sublime_plugin.on_hover(view.id(), 0, sublime.HOVER_GUTTER)
       
 class EventListener(sublime_plugin.EventListener):
   def on_post_save(self, view):
