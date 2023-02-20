@@ -47,7 +47,7 @@ You can now use this plugin via two methods either via Pageant on Windows or via
 
 1. Using via SSH (Linux, OSX, or Windows):
    * Set the `jenkins_ssh_user` (default admin), `jenkins_ssh_host` (default localhost), and `jenkins_ssh_port` (default 22) configuration values to match that of your Jenkins server.<br><br>
-   * Note: On Windows you must clear the pageant_session variable to use SSH.
+   * Note: On Windows you must clear the pageant_session configuration variable to use SSH.
 2. Or for a Pageant setup on Windows:
    * The name of the session must match the configured value of `pageant_session` (default is "jenkins") as shown:
       ![](http://june07.github.io/image/JenkinsfilePageantConfig500.jpg)
