@@ -1,10 +1,10 @@
 # sublime-Jenkinsfile
 
-Jenkinsfile is a plugin for Sublime Text.
+Jenkinsfile is a plugin for Sublime Text that gives you easy access to the Jenkins declarative-linter via a secure mechanism, SSH or HTTPS.
 
 [https://packagecontrol.io/packages/Jenkinsfile](https://packagecontrol.io/packages/Jenkinsfile)
 
-  - Securely (ssh) lint your Jenkinsfile ([What is a Jenkinsfile?](https://jenkins.io/doc/book/pipeline/jenkinsfile/)) inside of Sublime Text
+  - Securely (ssh, https) lint your Jenkinsfile ([What is a Jenkinsfile?](https://jenkins.io/doc/book/pipeline/jenkinsfile/)) inside of Sublime Text
   - Lint against Jenkins cloud instance if ssh access is unavailble on your primary environment
   - Magic
 
@@ -54,7 +54,20 @@ You can now use this plugin via two methods either via Pageant on Windows or via
 
 ## Usage
 
-Now whenever you have are editing a Jenkinsfile (must be named as such) and save the file, the plugin will invoke the remote instance of the Jenkins declarative-linter.
+Now whenever you have are editing a Jenkinsfile (must be named as such) and save the file, the plugin will invoke the remote instance of the Jenkins declarative-linter... either configured via SSH credentials or a hosted Jenkins declarative-linter HTTPS endpoint such as `https://api.brakecode.com/api/v1/jenkinsfile`.
+
+### Hosted Jenkins Declarative Linter Enpoint
+
+Given a configuration file with the following included:
+
+```
+"jenkins_http_endpoint": "https://api.brakecode.com/api/v1/jenkinsfile"
+```
+
+you will have access to the [BrakeCODE](https://brakecode.com) hosted endpoint of the Jenkins declarative linter and be able to use a limited amount of free API calls.
+
+By default this endpoint is not configured. The server resources are entirely owned by the author of this plugin, however as your Jenkinsfile will be sent (**securely**) to infrastructure outside of your control, it was thought best to leave this as a feature which required clear user intent and configuration. Currently, no analytics or other data collection is done.
+
 The file can also be linted without saving by using the keyboard shortcut (cntl-alt-j by default)
 
 ![](http://june07.github.io/image/JenkinsfileScreenshot1.jpg)
