@@ -1,0 +1,1 @@
+chokidar "**/*.py" -c watch.bat
