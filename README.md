@@ -75,8 +75,8 @@ The file can also be linted without saving by using the keyboard shortcut (cntl-
 
 ## Todos
 
- - Add support for ~~Linux~~(done 2/16/23!), All OSs are not supported via SSH.
- - Add hosted Jenkins validation
+ - ~~Add support for Linux~~ (done 2/16/23!), All OSs are not supported via SSH.
+ - ~~Add hosted Jenkins validation~~ (done 2/20/2023)
 
 License
 ----
