@@ -68,6 +68,8 @@ you will have access to the [BrakeCODE](https://brakecode.com) hosted endpoint o
 
 By default this endpoint is not configured. The server resources are entirely owned by the author of this plugin, however as your Jenkinsfile will be sent (**securely**) to infrastructure outside of your control, it was thought best to leave this as a feature which required clear user intent and configuration. Currently, no analytics or other data collection is done.
 
+![image](https://user-images.githubusercontent.com/11353590/220235985-abfc561c-673d-479a-85c5-c98d5ab36c1e.png)
+
 The file can also be linted without saving by using the keyboard shortcut (cntl-alt-j by default)
 
 ![](http://june07.github.io/image/JenkinsfileScreenshot1.jpg)
