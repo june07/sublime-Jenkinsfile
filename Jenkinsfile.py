@@ -1,7 +1,9 @@
 import sys
 import re
 import os
+import base64
 import logging
+import http.client
 import subprocess
 from subprocess import Popen, PIPE
 
@@ -52,15 +54,27 @@ class JenkinsfileCommand(sublime_plugin.TextCommand):
       jenkinsfileRegion = sublime.Region(0, view.size())
       jenkinsfileString = view.substr(jenkinsfileRegion)
       logger.debug(jenkinsfileString)
-      if sublime.platform() == 'windows' and settings.get('pageant_session'): 
-        process = Popen(['plink', '-v', '-load', settings.get('pageant_session'), 'declarative-linter'], stdout=PIPE, stdin=PIPE, stderr=PIPE, startupinfo=startupinfo)
+      http_endpoint = settings.get('jenkins_http_endpoint')
+      if http_endpoint:
+        match = re.match(r'https?:\/\/([^/]*)(\/.*)', settings.get('jenkins_http_endpoint'))
+        host = match.group(1)
+        path = match.group(2)
+        encodedJenkinsfile = base64.b64encode(bytes(jenkinsfileString, 'UTF-8'))
+        conn = http.client.HTTPSConnection(host, 443, timeout=7)
+        conn.request('POST', path, encodedJenkinsfile, {'Content-Type': 'text/plain','X-Environment': 'canary'})
+        response = conn.getresponse()
+        stdout_data = response.read().decode('UTF-8')
+        stderr_data = None
       else:
-        process = Popen(['ssh', '-v', settings.get('jenkins_ssh_host'), '-p', settings.get('jenkins_ssh_port'), '-l', settings.get('jenkins_ssh_user'), 'declarative-linter'], stdout=PIPE, stdin=PIPE, stderr=PIPE)
-        
-      process_output = process.communicate(input=bytes(jenkinsfileString, 'UTF-8'))
-      stdout_data = (process_output[0]).decode('UTF-8')
-      stderr_data = (process_output[1]).decode('UTF-8')
-      
+        if sublime.platform() == 'windows' and settings.get('pageant_session'): 
+          process = Popen(['plink', '-v', '-load', settings.get('pageant_session'), 'declarative-linter'], stdout=PIPE, stdin=PIPE, stderr=PIPE, startupinfo=startupinfo)
+        else:
+          process = Popen(['ssh', '-v', settings.get('jenkins_ssh_host'), '-p', settings.get('jenkins_ssh_port'), '-l', settings.get('jenkins_ssh_user'), 'declarative-linter'], stdout=PIPE, stdin=PIPE, stderr=PIPE)
+          
+        process_output = process.communicate(input=bytes(jenkinsfileString, 'UTF-8'))
+        stdout_data = (process_output[0]).decode('UTF-8')
+        stderr_data = (process_output[1]).decode('UTF-8')
+
       if stderr_data:
         logger.debug('ERROR ' + stderr_data)
         error = re.search(r'.*Permission denied.*', stderr_data)
