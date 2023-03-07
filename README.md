@@ -29,6 +29,7 @@ And of course Jenkinsfile itself is open source with a [public Git repository][j
 
 With Package Control:
 1. First step is done with Package Control or manually
+
     - **With Package Control**
     Run “Package Control: Install Package” command, find and install Jenkinsfile plugin.
 
