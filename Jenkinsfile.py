@@ -50,7 +50,7 @@ if sublime.platform() == 'windows':
 class JenkinsfileCommand(sublime_plugin.TextCommand):
   def run(self, edit):
     view = self.view
-    if os.path.basename(view.file_name()) == 'Jenkinsfile':
+    if 'Jenkinsfile' in os.path.basename(view.file_name()):
       view = self.view
       view.erase_phantoms('alerts')
       jenkinsfileRegion = sublime.Region(0, view.size())
