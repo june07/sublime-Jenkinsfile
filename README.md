@@ -55,7 +55,7 @@ You can now use this plugin via two methods either via Pageant on Windows or via
 
 ## Usage
 
-Now whenever you have are editing a Jenkinsfile (must be named as such) and save the file, the plugin will invoke the remote instance of the Jenkins declarative-linter... either configured via SSH credentials or a hosted Jenkins declarative-linter HTTPS endpoint such as `https://api.brakecode.com/api/v1/jenkinsfile`.
+Now whenever you have are editing a Jenkinsfile (filename needs to include Jenkinsfile) and save the file, the plugin will invoke the remote instance of the Jenkins declarative-linter... either configured via SSH credentials or a hosted Jenkins declarative-linter HTTPS endpoint such as `https://api.brakecode.com/api/v1/jenkinsfile`.
 
 ### Hosted Jenkins Declarative Linter Enpoint
 
