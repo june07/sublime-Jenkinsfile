@@ -6,6 +6,7 @@ import logging
 import http.client
 import subprocess
 import shutil
+import urllib.parse
 from subprocess import Popen, PIPE
 
 import sublime
@@ -51,6 +52,7 @@ class JenkinsfileCommand(sublime_plugin.TextCommand):
   def run(self, edit):
     view = self.view
     if 'Jenkinsfile' in os.path.basename(view.file_name()):
+      print(f"Running Jenkinsfile validation for {view.file_name()}")
       view = self.view
       view.erase_phantoms('alerts')
       jenkinsfileRegion = sublime.Region(0, view.size())
@@ -59,20 +61,40 @@ class JenkinsfileCommand(sublime_plugin.TextCommand):
       http_endpoint = settings.get('jenkins_http_endpoint')
 
       if http_endpoint:
-        match = re.match(r'https?:\/\/([^/]*)(\/.*)', settings.get('jenkins_http_endpoint'))
-        host = match.group(1)
-        path = match.group(2)
+        logger.debug('Using HTTP endpoint.')
+        match = re.match(r'(https?):\/\/([^:/]+)(?::(\d+))?(\/.*)', settings.get('jenkins_http_endpoint'))
+        scheme = match.group(1)
+        host = match.group(2)
+        port = match.group(3)
+        path = match.group(4)
+        if port:
+            port = int(port)
+        else:
+            port = 443 if scheme == 'https' else 80
+            
         encodedJenkinsfile = base64.b64encode(bytes(jenkinsfileString, 'UTF-8'))
-        conn = http.client.HTTPSConnection(host, 443, timeout=7)
-        conn.request('POST', path, encodedJenkinsfile, {'Content-Type': 'text/plain','X-Environment': 'canary'})
+        conn = http.client.HTTPConnection(host, port, timeout=7)
+        # Prepare form data containing the decoded or raw string content
+        # (Note: Pipeline model converter usually accepts the raw string, or base64 depending on the exact route wrapper, 
+        # but standard form-encoding uses the key 'jenkinsfile')
+        post_data = urllib.parse.urlencode({'jenkinsfile': jenkinsfileString}).encode('utf-8')
+        headers = {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-Environment': 'canary'
+        }
+        conn.request('POST', path, post_data, headers)
         response = conn.getresponse()
         stdout_data = response.read().decode('UTF-8')
+        print(f"DEBUG STDOUT: {stdout_data}")
         stderr_data = None
       else:
+        logger.debug('Using SSH endpoint.')
         plink = shutil.which("plink.exe")
         if sublime.platform() == 'windows' and settings.get('pageant_session') and plink:
+          logger.debug('Using plink for SSH connection.')
           process = Popen(['plink', '-v', '-load', settings.get('pageant_session'), 'declarative-linter'], stdout=PIPE, stdin=PIPE, stderr=PIPE, startupinfo=startupinfo)
         else:
+          logger.debug('Using ssh for SSH connection.')
           process = Popen(['ssh', settings.get('jenkins_ssh_host'), '-p', settings.get('jenkins_ssh_port'), '-l', settings.get('jenkins_ssh_user'), 'declarative-linter'], stdout=PIPE, stdin=PIPE, stderr=PIPE, startupinfo=startupinfo)
           
         process_output = process.communicate(input=bytes(jenkinsfileString, 'UTF-8'))
@@ -80,6 +102,7 @@ class JenkinsfileCommand(sublime_plugin.TextCommand):
         stderr_data = (process_output[1]).decode('UTF-8')
       if stderr_data:
         logger.debug('ERROR ' + stderr_data)
+        print(f"DEBUG STDERR: {stderr_data}") # Print this to see the hidden error!
         error = re.search(r'.*Permission denied.*|.*Connection refused.*', stderr_data)
         if error:
           sublime.set_timeout_async(lambda: status_message(' ssh error: ' + error.group(0)), 1000)
@@ -122,7 +145,9 @@ class JenkinsfileCommand(sublime_plugin.TextCommand):
             layout=sublime.LAYOUT_BELOW,
             key='alerts')
 
-    sublime_plugin.on_hover(view.id(), 0, sublime.HOVER_GUTTER)
+        sublime_plugin.on_hover(view.id(), 0, sublime.HOVER_GUTTER)
+    else:
+        print(f"No Jenkinsfile detected ({view.file_name()})")
       
 class EventListener(sublime_plugin.EventListener):
   def on_post_save(self, view):
