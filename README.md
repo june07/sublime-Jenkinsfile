@@ -67,7 +67,9 @@ Given a configuration file with the following included:
 
 you will have access to the [BrakeCODE](https://brakecode.com) hosted endpoint of the Jenkins declarative linter and be able to use a limited amount of free API calls.
 
-By default this endpoint is not configured. The server resources are entirely owned by the author of this plugin, however as your Jenkinsfile will be sent (**securely**) to infrastructure outside of your control, it was thought best to leave this as a feature which required clear user intent and configuration. Currently, no analytics or other data collection is done.
+NOTE: The following has been commented out because the endpoint is no longer published by the author
+
+~~By default this endpoint is not configured. The server resources are entirely owned by the author of this plugin, however as your Jenkinsfile will be sent (**securely**) to infrastructure outside of your control, it was thought best to leave this as a feature which required clear user intent and configuration. Currently, no analytics or other data collection is done.~~
 
 ![image](https://user-images.githubusercontent.com/11353590/220235985-abfc561c-673d-479a-85c5-c98d5ab36c1e.png)
 
